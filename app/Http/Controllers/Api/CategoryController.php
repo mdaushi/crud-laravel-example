@@ -75,9 +75,19 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update($id, UpdateCategoryRequest $request)
     {
-        //
+        try {
+            $category = $this->categoryService->updateCategory($request->all(), $id);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'edit kategori berhasil',
+                'datas' => $category
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 404);
+        }
     }
 
     /**

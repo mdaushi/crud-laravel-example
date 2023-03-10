@@ -34,4 +34,15 @@ class CategoryService
 
         return $this->model::with('products')->find($id);
     }
+
+    public function updateCategory($input, $id)
+    {
+        $this->isFound($id);
+
+        return DB::transaction(function () use($input, $id) {
+            $category = $this->model::find($id);
+            $category->update($input);
+            $category->products()->sync($input['products']);
+        });
+    }
 }
