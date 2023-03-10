@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Image;
 use App\Models\Category;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,5 +34,15 @@ class Product extends Model
     protected static function newFactory(): Factory
     {
         return ProductFactory::new();
+    }
+
+    /**
+     * The images that belong to the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function images(): BelongsToMany
+    {
+        return $this->belongsToMany(Image::class, 'product_image');
     }
 }
