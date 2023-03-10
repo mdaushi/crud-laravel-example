@@ -93,8 +93,18 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        try {
+            $category = $this->categoryService->deleteCategory($id);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'hapus kategori berhasil',
+                'datas' => $category
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 404);
+        }
     }
 }

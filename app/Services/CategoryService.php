@@ -45,4 +45,11 @@ class CategoryService
             $category->products()->sync($input['products']);
         });
     }
+
+    public function deleteCategory($id)
+    {
+        $this->isFound($id);
+
+        return $this->model::find($id)->delete();
+    }
 }
