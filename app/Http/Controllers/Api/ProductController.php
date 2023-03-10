@@ -24,12 +24,12 @@ class ProductController extends Controller
     public function index()
     {
         try {
-            $categories = $this->productService->model::with('categories', 'images')->get();
+            $product = $this->productService->model::with('categories', 'images')->get();
             
             return response()->json([
                 'status' => true,
                 'message' => 'List produk',
-                'datas' => $categories
+                'datas' => $product
             ]);
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
@@ -41,30 +41,70 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        try {
+            $product = $this->productService->createProduct($request->all());
+
+            return response()->json([
+                'status' => true,
+                'message' => 'tambah product berhasil',
+                'datas' => $product
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 422);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        try {
+            $product = $this->productService->showProductbyId($id);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'detail produk',
+                'datas' => $product
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 404);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update($id, UpdateProductRequest $request)
     {
-        //
+        try {
+            $product = $this->productService->updateProduct($request->all(), $id);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'edit produk berhasil',
+                'datas' => $product
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 404);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        try {
+            $product = $this->productService->deleteProduct($id);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'hapus produk berhasil',
+                'datas' => $product
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 404);
+        }
     }
 }
