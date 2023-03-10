@@ -41,7 +41,17 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        try {
+            $category = $this->categoryService->createCategory($request->all());
+
+            return response()->json([
+                'status' => true,
+                'message' => 'tambah kategori berhasil',
+                'datas' => $category
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 422);
+        }
     }
 
     /**
