@@ -22,4 +22,18 @@ class ImageService
             ]);
         });
     }
+
+    protected function isFound($id)
+    {
+        if(!$this->model::where('id', $id)->exists()){
+            throw new \Exception('Image not found');
+        }
+    }
+
+    public function showImageById($id)
+    {
+        $this->isFound($id);
+
+        return $this->model::with('products')->find($id);
+    }
 }

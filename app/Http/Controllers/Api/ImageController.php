@@ -57,9 +57,19 @@ class ImageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Image $image)
+    public function show($id)
     {
-        //
+        try {
+            $image = $this->imageService->showImageById($id);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'detail image',
+                'message' => $image
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 404);
+        }
     }
 
     /**
