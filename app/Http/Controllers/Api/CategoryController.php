@@ -57,9 +57,19 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        //
+        try {
+            $category = $this->categoryService->showCategoryById($id);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'detail kategori',
+                'message' => $category
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 404);
+        }
     }
 
     /**

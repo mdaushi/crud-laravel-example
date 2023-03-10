@@ -20,4 +20,18 @@ class CategoryService
             return $category;
         });
     }
+
+    protected function isFound($id)
+    {
+        if(!$this->model::where('id', $id)->exists()){
+            throw new \Exception('Category not found');
+        }
+    }
+
+    public function showCategoryById($id)
+    {
+        $this->isFound($id);
+
+        return $this->model::with('products')->find($id);
+    }
 }
