@@ -7,6 +7,7 @@ use App\Models\Image;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateImageRequest;
 use App\Services\ImageService;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
@@ -40,7 +41,17 @@ class ImageController extends Controller
      */
     public function store(StoreImageRequest $request)
     {
-        //
+        try {
+            $image = $this->imageService->addImage($request);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'tambah image berhasil',
+                'datas' => $image
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 422);
+        }
     }
 
     /**
