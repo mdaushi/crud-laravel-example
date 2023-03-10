@@ -49,4 +49,11 @@ class ImageService
             ]);
         });
     }
+
+    public function deleteImage($id)
+    {
+        $this->isFound($id);
+
+        return $this->model::find($id)->delete();
+    }
 }

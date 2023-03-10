@@ -93,8 +93,18 @@ class ImageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Image $image)
+    public function destroy($id)
     {
-        //
+        try {
+            $image = $this->imageService->deleteImage($id);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'hapus image berhasil',
+                'datas' => $image
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 404);
+        }
     }
 }
