@@ -15,7 +15,9 @@ class CategoryService
     public function createCategory($input)
     {
         return DB::transaction(function () use($input) {
-            return $this->model::create($input);
+            $category = $this->model::create($input);
+            $category->products()->attach($input['products']);
+            return $category;
         });
     }
 }
