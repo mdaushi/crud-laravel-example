@@ -36,4 +36,17 @@ class ImageService
 
         return $this->model::with('products')->find($id);
     }
+
+    public function updateImage($input, $id)
+    {
+        $path = Storage::disk('public')->put('', $input->file('file'));
+
+        return DB::transaction(function () use($input, $path, $id) {
+            return $this->model::find($id)->update([
+                'name' => $input->name,
+                'file' => $path,
+                'enable' => $input->enable
+            ]);
+        });
+    }
 }

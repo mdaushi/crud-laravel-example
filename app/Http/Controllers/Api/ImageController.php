@@ -75,9 +75,19 @@ class ImageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateImageRequest $request, Image $image)
+    public function update($id, UpdateImageRequest $request)
     {
-        //
+        try {
+            $category = $this->imageService->updateImage($request, $id);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'edit image berhasil',
+                'datas' => $category
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 404);
+        }
     }
 
     /**
